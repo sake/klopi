@@ -1,0 +1,10 @@
+[Unit]
+Description = KloPi Sound Server
+
+[Service]
+Type=exec
+User=klopi_sound
+ExecStart=/opt/klopi/soundserver.py /home/klopi_sound/music
+
+[Install]
+WantedBy=default.target

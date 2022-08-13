@@ -1,0 +1,7 @@
+[Unit]
+Description=Bluetooth Autoconnect Job
+Requisite=bluetooth.target
+
+[Service]
+ExecStart=/opt/bluetoothctl-autoconnector/autoconnector.sh --ignore-ssh
+Type=oneshot

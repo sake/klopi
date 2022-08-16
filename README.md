@@ -23,15 +23,18 @@ Install tools and services:
 ```
 # apt install sox libsox-fmt-pulse libsox-fmt-mp3 \
     pulseaudio pulseaudio-module-bluetooth pulsemixer \
-    bluetooth bluez bluez-firmware
+    bluetooth bluez bluez-firmware \
+
 # cp system.pa /etc/pulse/system.pa
 # cp pulseaudio.service /etc/systemd/system/pulseaudio.service
 ```
 
 As described in the [pulseaudio documentation](https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/SystemWide/), the users of the system which need to access the audio system must belong to the correct groups.
-> When PulseAudio starts in the system mode, it will change its user and group from root to pulse in order to not have too many privileges. The pulse user needs to be in the audio and bluetooth groups in order to be able to use ALSA and bluetooth devices.
+> When PulseAudio starts in the system mode, it will change its user and group from root to pulse in order to not have too many privileges.
+> The pulse user needs to be in the audio and bluetooth groups in order to be able to use ALSA and bluetooth devices.
 >
-> All users that need access to PulseAudio have to be in the pulse-access group, even root. (TODO: We should probably allow root to access PulseAudio without being in the pulse-access group. Patches welcome!)
+> All users that need access to PulseAudio have to be in the pulse-access group, even root.
+> (TODO: We should probably allow root to access PulseAudio without being in the pulse-access group. Patches welcome!)
 
 After the system is prepared, perform a reboot and try to connect the bluetooth speaker.
 ```
@@ -49,3 +52,10 @@ Connection successful
 Once the speaker is connected, open pulsemixer and set the new speaker as default sink, so it is used when playing sound files.
 
 In order to set up automatic connection establishment with the speaker, the [bluetoothctl-autoconnector](https://github.com/noraworld/bluetoothctl-autoconnector) can be used.
+
+Install the soundserver service and create the appropriate user.
+```
+# adduser --disabled-password klopi_sound
+# sudo -u klopi_sound mkdir /home/klopi_sound/music
+# cp soundserver.service /etc/systemd/system/soundserver.service
+```

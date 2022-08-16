@@ -24,7 +24,7 @@ Install tools and services:
 # apt install sox libsox-fmt-pulse libsox-fmt-mp3 \
     pulseaudio pulseaudio-module-bluetooth pulsemixer \
     bluetooth bluez bluez-firmware \
-
+    inotify-tools git python3-pyinotify
 # cp system.pa /etc/pulse/system.pa
 # cp pulseaudio.service /etc/systemd/system/pulseaudio.service
 ```

@@ -49,23 +49,23 @@ class DataCollector:
         else:
             raise TypeError('Invalid event type')
 
-        num_samples = int(sig_duration / SAMPLE_WIDTH_MS)
-        if num_samples > num_samples():
-            num_samples = num_samples()
-        #print(num_samples)
+        num_recorded_samples = int(sig_duration / SAMPLE_WIDTH_MS)
+        if num_recorded_samples > num_samples():
+            num_recorded_samples = num_samples()
+        #print(num_recorded_samples)
         #print(len(self.VALUES))
         
         # append new values
         if self.backwards:
-            for n in range(num_samples):
+            for n in range(num_recorded_samples):
                 self.VALUES.insert(0, old_sigval)
             # pop equal number of values
-            for i in range(num_samples):
+            for i in range(num_recorded_samples):
                 self.VALUES.pop(-1)
         else:
-            self.VALUES.extend([old_sigval for n in range(num_samples)])
+            self.VALUES.extend([old_sigval for n in range(num_recorded_samples)])
             # pop equal number of values
-            for i in range(num_samples):
+            for i in range(num_recorded_samples):
                 self.VALUES.pop(0)
 
 

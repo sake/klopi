@@ -58,6 +58,7 @@ Install the soundserver service and create the appropriate user.
 # adduser --disabled-password klopi_sound
 # sudo -u klopi_sound mkdir /home/klopi_sound/music
 # cp soundserver.service /etc/systemd/system/soundserver.service
+# systemctl enable soundserver.service
 ```
 
 In case /var/run is on a ramfs, add the following lines to `/etc/rc.local`.
@@ -75,6 +76,7 @@ The list file can contain multiple signal definitions, where each signal value i
 Once the signal can be captured successfully (test with the `watch_air.py` command directly), the watch service can be installed.
 ```
 # cp airwatcher.service /etc/systemd/system/airwatcher.service
+# systemctl enable airwatcher.service
 ```
 
 The last step is to add some music to the `/home/klopi_sound/music` folder.

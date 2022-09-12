@@ -2,7 +2,7 @@ from datetime import datetime
 import sys
 import gpiod
 import numpy as np
-from gpioread import DataCollector
+from gpioread import DataCollector, connect_line
 
 
 def print_sequence(values):
@@ -33,20 +33,10 @@ def print_sequence(values):
 
 
 if __name__ == '__main__':
-    chip = gpiod.Chip('gpiochip0', gpiod.Chip.OPEN_BY_NAME)
-    line = chip.find_line('CON2-P08')
-
-    # config = gpiod.line_request()
-    # config.consumer = "gpiotest"
-    # config.request_type = gpiod.line_request.DIRECTION_INPUT
-
-    # line.set_direction_input()
-    # line.set_flags(gpiod.BIAS_PULL_UP)
-    #flags = gpiod.LINE_REQ_FLAG_BIAS_PULL_UP
-    line.request("gpiotest", type=gpiod.LINE_REQ_EV_BOTH_EDGES)#, flags=flags)
+    (chip, line) = connect_line()
 
     beginning_time = datetime.now()
-    dc = DataCollector()
+    dc = DataCollector(with_deltas=True)
     #0.36ms sample size
     while (True):
         line.event_wait()

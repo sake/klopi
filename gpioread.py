@@ -7,7 +7,9 @@ SAMPLE_WIDTH_MS = 0.3
 
 
 class DataCollector:
-    def __init__(self) -> None:
+    def __init__(self, backwards=False, with_deltas=False) -> None:
+        self.backwards = backwards
+        self.with_deltas = with_deltas
         self.last_event_time = 0
         self.VALUES = self.init_values()
         self.deltas = self.init_values()
@@ -27,8 +29,9 @@ class DataCollector:
         else:
             self.last_event_time = event_time
 
-        self.deltas.append(sig_duration)
-        self.deltas.pop(0)
+        if self.with_deltas:
+            self.deltas.append(sig_duration)
+            self.deltas.pop(0)
         #print(sig_duration)
         #print(f'{sig_duration:.3f}')
         #print('{0:.6g}'.format(sig_duration))
@@ -47,11 +50,19 @@ class DataCollector:
         num_samples = int(sig_duration / SAMPLE_WIDTH_MS)
         #print(num_samples)
         #print(len(self.VALUES))
+        
         # append new values
-        self.VALUES.extend([old_sigval for n in range(num_samples)])
-        # pop equal number of values
-        for i in range(num_samples):
-            self.VALUES.pop(0)
+        if self.backwards:
+            for n in range(num_samples):
+                self.VALUES.insert(0, old_sigval)
+            # pop equal number of values
+            for i in range(num_samples):
+                self.VALUES.pop(-1)
+        else:
+            self.VALUES.extend([old_sigval for n in range(num_samples)])
+            # pop equal number of values
+            for i in range(num_samples):
+                self.VALUES.pop(0)
 
 
 def print_event(event):
@@ -65,3 +76,18 @@ def print_event(event):
     print('event: {} offset: {} timestamp: [{}.{}]'.format(evstr,
                                                             event.source.offset(),
                                                             event.sec, event.nsec))
+
+def connect_line():
+    chip = gpiod.Chip('gpiochip0', gpiod.Chip.OPEN_BY_NAME)
+    line = chip.find_line('CON2-P08')
+
+    # config = gpiod.line_request()
+    # config.consumer = "gpiotest"
+    # config.request_type = gpiod.line_request.DIRECTION_INPUT
+
+    # line.set_direction_input()
+    # line.set_flags(gpiod.BIAS_PULL_UP)
+    #flags = gpiod.LINE_REQ_FLAG_BIAS_PULL_UP
+    line.request("gpiotest", type=gpiod.LINE_REQ_EV_BOTH_EDGES)#, flags=flags)
+    
+    return (chip, line)

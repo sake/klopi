@@ -7,6 +7,7 @@ import threading
 from time import sleep
 import gpiod
 from gpioread import DataCollector, connect_line
+from soundclient import SoundClient
 
 
 def load_signal_strings(signals_file):
@@ -15,6 +16,7 @@ def load_signal_strings(signals_file):
         m = re.search("(0|1)+", line)
         if m:
             bitList = [int(c) for c in m.group(0)]
+            bitList.reverse()
             result.append(bitList)
     return result
 
@@ -26,7 +28,7 @@ def find_signal(signals, values):
             for j in range(len(signal)):
                 if values[i+j] != signal[j]:
                     match_found = False
-                    break;
+                    break
             if match_found:
                 return True
     # we scanned everything and found nothing
@@ -34,12 +36,15 @@ def find_signal(signals, values):
 
 def record_fun(line, dc, mutex):
     while (True):
-        line.event_wait()
-        evt = line.event_read()
-        #print_event(evt)
-        mutex.acquire()
-        dc.record_samples(evt)
-        mutex.release()
+        if line.event_wait(2):
+            evt = line.event_read()
+            #print_event(evt)
+            mutex.acquire()
+            dc.record_samples(evt)
+            mutex.release()
+        else:
+            #print("clearing values")
+            dc.clear_values()
 
 
 def search_fun(signals, dc, mutex):
@@ -53,7 +58,18 @@ def search_fun(signals, dc, mutex):
         mutex.release()
 
         if find_signal(signals, values):
-            print("Signal found")
+            play_sample()
+            # wait for list to be cleared
+            sleep(3)
+
+def play_sample():
+    try:
+        print("Playing sound.")
+        sc = SoundClient()
+        sc.play_random()
+    except Exception as e:
+        print("Error calling SoundClient: ", e)
+
 
 def main() -> int:
     parser = argparse.ArgumentParser(description='KloPi Air Watcher')

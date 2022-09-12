@@ -1,10 +1,12 @@
 import gpiod
 
-COLLECTION_WIDTH_MS = 200
+COLLECTION_WIDTH_MS = 500
 MAX_DIFF_TIME_MS = 50
 #SAMPLE_WIDTH_MS = 0.36
 SAMPLE_WIDTH_MS = 0.3
 
+def num_samples():
+    return int(COLLECTION_WIDTH_MS / SAMPLE_WIDTH_MS)
 
 class DataCollector:
     def __init__(self, backwards=False, with_deltas=False) -> None:
@@ -15,7 +17,10 @@ class DataCollector:
         self.deltas = self.init_values()
 
     def init_values(self):
-        return [0 for n in range(int(COLLECTION_WIDTH_MS / SAMPLE_WIDTH_MS))]
+        return [0 for n in range(num_samples())]
+
+    def clear_values(self):
+        self.VALUES = self.init_values()
 
     def record_samples(self, event):
         event_time = event.sec + (event.nsec / 1000000000)
@@ -35,9 +40,6 @@ class DataCollector:
         #print(sig_duration)
         #print(f'{sig_duration:.3f}')
         #print('{0:.6g}'.format(sig_duration))
-        # limit signal duration
-        if sig_duration > MAX_DIFF_TIME_MS:
-            sig_duration = MAX_DIFF_TIME_MS
 
         old_sigval = None
         if event.type == gpiod.LineEvent.RISING_EDGE:
@@ -48,6 +50,8 @@ class DataCollector:
             raise TypeError('Invalid event type')
 
         num_samples = int(sig_duration / SAMPLE_WIDTH_MS)
+        if num_samples > num_samples():
+            num_samples = num_samples()
         #print(num_samples)
         #print(len(self.VALUES))
         
@@ -89,5 +93,5 @@ def connect_line():
     # line.set_flags(gpiod.BIAS_PULL_UP)
     #flags = gpiod.LINE_REQ_FLAG_BIAS_PULL_UP
     line.request("gpiotest", type=gpiod.LINE_REQ_EV_BOTH_EDGES)#, flags=flags)
-    
+
     return (chip, line)

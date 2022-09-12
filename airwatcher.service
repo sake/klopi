@@ -1,0 +1,10 @@
+[Unit]
+Description = KloPi Air Watcher
+
+[Service]
+Type=exec
+User=root
+ExecStart=/opt/klopi/watch_air.py /root/signals.list
+
+[Install]
+WantedBy=default.target

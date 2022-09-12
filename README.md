@@ -24,7 +24,7 @@ Install tools and services:
 # apt install sox libsox-fmt-pulse libsox-fmt-mp3 \
     pulseaudio pulseaudio-module-bluetooth pulsemixer \
     bluetooth bluez bluez-firmware \
-
+    gpiod python3-libgpiod
 # cp system.pa /etc/pulse/system.pa
 # cp pulseaudio.service /etc/systemd/system/pulseaudio.service
 ```
@@ -59,3 +59,22 @@ Install the soundserver service and create the appropriate user.
 # sudo -u klopi_sound mkdir /home/klopi_sound/music
 # cp soundserver.service /etc/systemd/system/soundserver.service
 ```
+
+In case /var/run is on a ramfs, add the following lines to `/etc/rc.local`.
+```
+# init klopi run folder
+mkdir /var/run/klopi
+chown klopi_sound /var/run/klopi
+```
+
+Learn the signal from the remote control by executing the `find_signals.py` script.
+If it detects a proper signal, it will be output to the console.
+The signal value must then be copied to the file `/root/signals.list`.
+The list file can contain multiple signal definitions, where each signal value is one line.
+
+Once the signal can be captured successfully (test with the `watch_air.py` command directly), the watch service can be installed.
+```
+# cp airwatcher.service /etc/systemd/system/airwatcher.service
+```
+
+The last step is to add some music to the `/home/klopi_sound/music` folder.

@@ -91,7 +91,7 @@ def connect_line():
 
     # line.set_direction_input()
     # line.set_flags(gpiod.BIAS_PULL_UP)
-    #flags = gpiod.LINE_REQ_FLAG_BIAS_PULL_UP
-    line.request("gpiotest", type=gpiod.LINE_REQ_EV_BOTH_EDGES)#, flags=flags)
+    flags = gpiod.LINE_REQ_FLAG_BIAS_PULL_UP
+    line.request("gpiotest", type=gpiod.LINE_REQ_EV_BOTH_EDGES, flags=flags)
 
     return (chip, line)

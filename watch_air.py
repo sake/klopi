@@ -51,9 +51,6 @@ def record_fun(line, dc, mutex):
 
 def search_fun(signals, dc, mutex):
     while True:
-        # wait one complete timeframe
-        sleep(150/1000)
-
         # copy data in a safe way
         mutex.acquire()
         values = deepcopy(dc.VALUES)
@@ -63,6 +60,10 @@ def search_fun(signals, dc, mutex):
             play_sample()
             # wait for list to be cleared
             sleep(3)
+        else:
+            # wait one complete timeframe
+            sleep(150/1000)
+
 
 def play_sample():
     try:

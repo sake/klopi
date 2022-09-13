@@ -27,9 +27,9 @@ def run_watcher(music_dir, handler):
     notify.loop()
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description='KloPi sound server')
+    parser = argparse.ArgumentParser(description='KloPi music watcher')
     parser.add_argument("music_dir")
-    parser.add_argument("--group", nargs='?')
+    #parser.add_argument("--group", nargs='?')
     parser.add_argument("--socket", nargs='?', default=SOCKET_FILE)
     args = parser.parse_args()
 

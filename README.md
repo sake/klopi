@@ -57,6 +57,7 @@ In order to set up automatic connection establishment with the speaker, the [blu
 Install the soundserver service and create the appropriate user.
 ```
 # adduser --disabled-password klopi_sound
+# adduser klopi_sound pulse-access
 # sudo -u klopi_sound mkdir /home/klopi_sound/music
 # cp soundserver.service /etc/systemd/system/soundserver.service
 # systemctl enable soundserver.service
@@ -80,4 +81,8 @@ Once the signal can be captured successfully (test with the `watch_air.py` comma
 # systemctl enable airwatcher.service
 ```
 
-The last step is to add some music to the `/home/klopi_sound/music` folder.
+The last step is to add some music to the `/home/klopi_sound/music` folder and enable the music file watcher service.
+```
+# cp musicwatcher.service /etc/systemd/system/service
+# systemctl enable musicwatcher.service
+```

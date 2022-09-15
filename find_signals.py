@@ -42,13 +42,13 @@ if __name__ == '__main__':
     #0.36ms sample size
     while (True):
         line.event_wait()
-        evt = line.event_read()
-        #print_event(evt)
-        dc.record_samples(evt)
-        if (datetime.now() - beginning_time).seconds > 1:
-            #print(np.array(dc.VALUES, dtype=bytes).tobytes())
-            #print(dc.deltas)
-            print_sequence(dc.VALUES)
-            sys.exit(0)
+        for evt in line.event_read_multiple():
+            #print_event(evt)
+            dc.record_samples(evt)
+            if (datetime.now() - beginning_time).seconds > 1:
+                #print(np.array(dc.VALUES, dtype=bytes).tobytes())
+                #print(dc.deltas)
+                print_sequence(dc.VALUES)
+                sys.exit(0)
 
     #chip.close()

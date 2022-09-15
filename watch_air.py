@@ -39,10 +39,10 @@ def find_signal(signals, values):
 def record_fun(line, dc, mutex):
     while (True):
         if line.event_wait(2):
-            evt = line.event_read()
-            #print_event(evt)
             mutex.acquire()
-            dc.record_samples(evt)
+            for evt in line.event_read_multiple():
+                #print_event(evt)
+                dc.record_samples(evt)
             mutex.release()
         else:
             #print("clearing values")

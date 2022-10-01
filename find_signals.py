@@ -29,7 +29,7 @@ def print_sequence(values):
         if end != -1:
             result = values[:(end+1)]
             rest = values[(end+1):]
-            print(result)
+            print(f"{result} {len(result)} bit")
             print_sequence(rest)
 
 
@@ -46,8 +46,14 @@ if __name__ == '__main__':
             #print_event(evt)
             dc.record_samples(evt)
             if (datetime.now() - beginning_time).seconds > 1:
-                #print(np.array(dc.VALUES, dtype=bytes).tobytes())
+                # print("Captured Data")
+                # print("=============")
+                # print(np.array(dc.VALUES, dtype=bytes).tobytes())
                 #print(dc.deltas)
+                print()
+                print("Detected Signals")
+                print("================")
+ 
                 print_sequence(dc.VALUES)
                 sys.exit(0)
 

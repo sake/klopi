@@ -1,0 +1,18 @@
+Toiletten Upcycling mit IOT - Das Projekt KloPi
+
+Alten Geräten einen neuen Sinn geben ist der Kerngedanke des
+Upcycling. In diesem Fall geht es um die nutzlos gewordenen Spülknöpfe
+von auf ein wasserloses System umgerüsteten Urinalen. Da die
+fraglichen Toiletten in einer Coburger Kneipe stehen wurde in
+feuchtfröhlicher Runde der Entschluss gefasst den Toilettenbesuch
+durch musikalische Untermalung aufzulockern und bei dem ein oder
+anderen unbedarften Gast für eine kleine Überraschung beim Druck auf
+den Spülknopf zu sorgen.
+
+Der Vortrag stellt das Projekt mit seinen Hard- und Software
+Komponenten vor. Dabei wird auf technische Hürden und deren Lösungen
+eingegangen. Am Ende soll der technik versierte Zuhörer mit den
+bereitgestellten Quellen [1] selbst in der Lage sein das Projekt
+nachzubauen und entsprechend den eigenen Bedürfnissen anzupassen.
+
+[1] https://github.com/sake/klopi
